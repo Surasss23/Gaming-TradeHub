@@ -9,7 +9,7 @@ const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
 // Google Sheets Public CSV URL (Replace "YOUR_SHEET_ID" with actual Sheet ID)
-const sheetUrl = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:csv";
+const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGpnhHsb907pkEZOEqXMNibGS7zqXu2ftp4PHA-Ml5hp8jDLxODuQ97cQeT7RmDiS6rBFTKOxTQjwe/pub?output=csv";
 
 // Marketplace Listings
 let listings = [];
