@@ -8,7 +8,7 @@ const registerForm = document.getElementById('registerForm');
 const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
-// Google Sheets Public CSV URL (sellerUrl removed)
+// Google Sheets Public CSV URL
 const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGpnhHsb907pkEZOEqXMNibGS7zqXu2ftp4PHA-Ml5hp8jDLxODuQ97cQeT7RmDiS6rBFTKOxTQjwe/pub?output=csv";
 
 // Marketplace Listings
@@ -19,17 +19,21 @@ async function fetchListings() {
     try {
         const response = await fetch(sheetUrl);
         const data = await response.text();
+
+        // CSV Parsing fix (lines splitting properly)
         const rows = data.split("\n").map(row => row.split(","));
 
-        // CSV headers hatao (first row)
+        // CSV headers hatao (first row) aur ensure karo ke sahi indexing ho
         listings = rows.slice(1).map(row => ({
-            id: row[0].trim(),         // Unique Listing ID
-            title: row[1].trim(),      // Title
-            gameType: row[2].trim(),   // Game Type
-            price: `₹${row[3].trim()}`, // Price
-            description: row[4].trim(), // Description
-            imageUrl: row[5].trim() || "https://via.placeholder.com/200" // Default image
+            id: row[0]?.trim() || "N/A",         // Unique Listing ID
+            title: row[1]?.trim() || "Unknown",  // Title
+            gameType: row[2]?.trim() || "N/A",   // Game Type
+            price: `₹${row[3]?.trim() || "N/A"}`, // Price
+            description: row[4]?.trim() || "No Description", // Description
+            imageUrl: row[5]?.trim() || "https://via.placeholder.com/200" // Default image
         }));
+
+        console.log("Listings fetched:", listings); // Debugging ke liye
 
         renderListings();
     } catch (error) {
@@ -57,7 +61,7 @@ Mujhe iske baare me aur details chahiye. 🚀`);
 function createListingCard(listing) {
     return `
         <div class="glass" style="padding: 1rem; overflow: hidden;">
-            <div style="height: 200px; background: url(${listing.imageUrl}) center/cover; border-radius: var(--radius) var(--radius) 0 0;"></div>
+            <div style="height: 200px; background: url(${listing.imageUrl}) center/cover no-repeat; border-radius: var(--radius) var(--radius) 0 0;"></div>
             <div style="padding: 1rem;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                     <div>
