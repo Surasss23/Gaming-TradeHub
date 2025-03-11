@@ -9,7 +9,7 @@ const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
 // Google Sheets Public CSV URL (Replace "YOUR_SHEET_ID" with actual Sheet ID)
-const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGpnhHsb907pkEZOEqXMNibGS7zqXu2ftp4PHA-Ml5hp8jDLxODuQ97cQeT7RmDiS6rBFTKOxTQjwe/pub?output=csv";
+const sheetUrl = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:csv";
 
 // Marketplace Listings
 let listings = [];
@@ -28,7 +28,8 @@ async function fetchListings() {
             gameType: row[2].trim(),
             price: `₹${row[3].trim()}`, // INR Format
             description: row[4].trim(),
-            imageUrl: row[5].trim() || "https://via.placeholder.com/200" // Default image
+            imageUrl: row[5].trim() || "https://via.placeholder.com/200", // Default image
+            sellerUrl: row[6].trim() || "#" // Seller URL (next page ya external link)
         }));
 
         renderListings();
@@ -51,7 +52,7 @@ function createListingCard(listing) {
                     <span class="btn btn-primary" style="font-size: 1.25rem;">${listing.price}</span>
                 </div>
                 <p style="color: var(--muted); margin-bottom: 1rem;">${listing.description}</p>
-                <button class="btn btn-primary" style="width: 100%;">Contact Seller</button>
+                <a href="${listing.sellerUrl}" class="btn btn-primary" style="width: 100%;" target="_blank">Contact Seller</a>
             </div>
         </div>
     `;
