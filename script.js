@@ -1,10 +1,4 @@
 // DOM Elements
-const authButton = document.getElementById('authButton');
-const authModal = document.getElementById('authModal');
-const closeBtn = document.querySelector('.close-btn');
-const tabBtns = document.querySelectorAll('.tab-btn');
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
 const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
@@ -51,7 +45,7 @@ function createListingCard(listing) {
                     <span class="btn btn-primary" style="font-size: 1.25rem;">${listing.price}</span>
                 </div>
                 <p style="color: var(--muted); margin-bottom: 1rem;">${listing.description}</p>
-                <button class="btn btn-primary" style="width: 100%;">Contact Seller</button>
+                <button class="btn btn-primary contact-btn" data-id="${listing.id}" data-title="${listing.title}" data-price="${listing.price}" data-description="${listing.description}" style="width: 100%;">Contact Seller</button>
             </div>
         </div>
     `;
@@ -62,6 +56,26 @@ function renderListings(filteredListings = listings) {
     listingGrid.innerHTML = filteredListings
         .map(listing => createListingCard(listing))
         .join('');
+
+    // Add event listeners for Contact Seller buttons
+    document.querySelectorAll(".contact-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const id = this.dataset.id;
+            const title = this.dataset.title;
+            const price = this.dataset.price;
+            const description = this.dataset.description;
+            sendWhatsAppMessage(id, title, price, description);
+        });
+    });
+}
+
+// Send WhatsApp Message
+function sendWhatsAppMessage(id, title, price, description) {
+    const phoneNumber = "7989386499"; // Your WhatsApp Number
+    const message = `📌 *Product Inquiry*\n\n🆔 ID: ${id}\n🎮 Title: ${title}\n💰 Price: ${price}\n📝 Description: ${description}\n\nI am interested in this item. Please provide more details.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, "_blank"); // Open WhatsApp
 }
 
 // Search Functionality
@@ -72,56 +86,6 @@ searchInput.addEventListener('input', (e) => {
         listing.gameType.toLowerCase().includes(searchTerm)
     );
     renderListings(filteredListings);
-});
-
-// Auth Modal
-authButton.addEventListener('click', () => {
-    authModal.style.display = 'block';
-});
-
-closeBtn.addEventListener('click', () => {
-    authModal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-    if (e.target === authModal) {
-        authModal.style.display = 'none';
-    }
-});
-
-// Tab Switching
-tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const tabName = btn.dataset.tab;
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.add('hidden');
-        });
-        document.getElementById(`${tabName}Tab`).classList.remove('hidden');
-    });
-});
-
-// Form Submission
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = loginForm.querySelector('input[type="text"]').value;
-    const password = loginForm.querySelector('input[type="password"]').value;
-    
-    console.log('Login:', { username, password });
-    authModal.style.display = 'none';
-    authButton.textContent = username;
-});
-
-registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = registerForm.querySelector('input[type="text"]').value;
-    const password = registerForm.querySelector('input[type="password"]').value;
-    
-    console.log('Register:', { username, password });
-    authModal.style.display = 'none';
-    authButton.textContent = username;
 });
 
 // Fetch and Render Listings
