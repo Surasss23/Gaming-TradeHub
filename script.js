@@ -8,7 +8,7 @@ const registerForm = document.getElementById('registerForm');
 const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
-// Google Sheets Public CSV URL
+// Google Sheets Public CSV URL (Replace "YOUR_SHEET_ID" with actual Sheet ID)
 const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGpnhHsb907pkEZOEqXMNibGS7zqXu2ftp4PHA-Ml5hp8jDLxODuQ97cQeT7RmDiS6rBFTKOxTQjwe/pub?output=csv";
 
 // Marketplace Listings
@@ -18,53 +18,30 @@ let listings = [];
 async function fetchListings() {
     try {
         const response = await fetch(sheetUrl);
-        if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
-
         const data = await response.text();
-        console.log("Fetched CSV Data:\n", data); // Debugging
+        const rows = data.split("\n").map(row => row.split(","));
 
-        // CSV Parsing
-        const rows = data.split("\n").map(row => row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g));
-
-        if (rows.length < 2) throw new Error("Invalid CSV Format!");
-
+        // CSV headers hatao (first row)
         listings = rows.slice(1).map(row => ({
-            id: row[0]?.trim() || "N/A",
-            title: row[1]?.trim() || "Unknown",
-            gameType: row[2]?.trim() || "N/A",
-            price: `₹${row[3]?.trim() || "N/A"}`,
-            description: row[4]?.trim() || "No Description",
-            imageUrl: row[5]?.trim() || "https://via.placeholder.com/200"
+            id: row[0].trim(),
+            title: row[1].trim(),
+            gameType: row[2].trim(),
+            price: `₹${row[3].trim()}`, // INR Format
+            description: row[4].trim(),
+            imageUrl: row[5].trim() || "https://via.placeholder.com/200" // Default image
         }));
 
-        console.log("Parsed Listings:", listings);
         renderListings();
     } catch (error) {
-        console.error("Error Fetching Data:", error);
+        console.error("Error fetching data:", error);
     }
-}
-
-// Function to Create WhatsApp Link for "Contact Seller"
-function generateSellerWhatsAppLink(listing) {
-    const phoneNumber = "7989386499"; // Tumhara WhatsApp Number
-    const message = encodeURIComponent(`
-🔥 *Seller Inquiry*:
-🆔 *ID:* ${listing.id}
-📌 *Account:* ${listing.title}
-🎮 *Game Type:* ${listing.gameType}
-💰 *Price:* ${listing.price}
-ℹ️ *Description:* ${listing.description}
-
-Mujhe iske baare me aur details chahiye. 🚀`);
-
-    return `https://wa.me/${phoneNumber}?text=${message}`;
 }
 
 // Create Listing Card
 function createListingCard(listing) {
     return `
         <div class="glass" style="padding: 1rem; overflow: hidden;">
-            <div style="height: 200px; background: url(${listing.imageUrl}) center/cover no-repeat; border-radius: var(--radius) var(--radius) 0 0;"></div>
+            <div style="height: 200px; background: url(${listing.imageUrl}) center/cover; border-radius: var(--radius) var(--radius) 0 0;"></div>
             <div style="padding: 1rem;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                     <div>
@@ -74,11 +51,7 @@ function createListingCard(listing) {
                     <span class="btn btn-primary" style="font-size: 1.25rem;">${listing.price}</span>
                 </div>
                 <p style="color: var(--muted); margin-bottom: 1rem;">${listing.description}</p>
-                <div style="display: flex; gap: 0.5rem;">
-                    <a href="${generateSellerWhatsAppLink(listing)}" class="btn btn-primary" style="flex: 1;" target="_blank">
-                        Contact Seller
-                    </a>
-                </div>
+                <button class="btn btn-primary" style="width: 100%;">Contact Seller</button>
             </div>
         </div>
     `;
