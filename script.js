@@ -8,7 +8,7 @@ const registerForm = document.getElementById('registerForm');
 const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
-// Google Sheets Public CSV URL (Replace "YOUR_SHEET_ID" with actual Sheet ID)
+// Google Sheets Public CSV URL
 const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGpnhHsb907pkEZOEqXMNibGS7zqXu2ftp4PHA-Ml5hp8jDLxODuQ97cQeT7RmDiS6rBFTKOxTQjwe/pub?output=csv";
 
 // Marketplace Listings
@@ -26,7 +26,7 @@ async function fetchListings() {
             id: row[0].trim(),
             title: row[1].trim(),
             gameType: row[2].trim(),
-            price: `₹${row[3].trim()}`, // INR Format
+            price: `₹${row[3].trim()}`,
             description: row[4].trim(),
             imageUrl: row[5].trim() || "https://via.placeholder.com/200", // Default image
             sellerUrl: row[6].trim() || "#" // Seller URL (next page ya external link)
@@ -36,6 +36,21 @@ async function fetchListings() {
     } catch (error) {
         console.error("Error fetching data:", error);
     }
+}
+
+// Function to Create WhatsApp Link
+function generateWhatsAppLink(listing) {
+    const phoneNumber = "7989386499"; // Seller's WhatsApp Number
+    const message = encodeURIComponent(`
+🔥 New Inquiry:
+📌 Account: ${listing.title}
+💰 Price: ${listing.price}
+🎮 Game: ${listing.gameType}
+ℹ️ Description: ${listing.description}
+
+-Gaming TradeHub;
+
+    return `https://wa.me/${phoneNumber}?text=${message}`;
 }
 
 // Create Listing Card
@@ -52,7 +67,14 @@ function createListingCard(listing) {
                     <span class="btn btn-primary" style="font-size: 1.25rem;">${listing.price}</span>
                 </div>
                 <p style="color: var(--muted); margin-bottom: 1rem;">${listing.description}</p>
-                <a href="${listing.sellerUrl}" class="btn btn-primary" style="width: 100%;" target="_blank">Contact Seller</a>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="${generateWhatsAppLink(listing)}" class="btn btn-primary" style="flex: 1;" target="_blank">
+                        Contact on WhatsApp
+                    </a>
+                    <a href="${listing.sellerUrl}" class="btn btn-outline" style="flex: 1;" target="_blank">
+                        Contact Seller
+                    </a>
+                </div>
             </div>
         </div>
     `;
