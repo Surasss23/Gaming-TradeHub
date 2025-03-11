@@ -8,7 +8,7 @@ const registerForm = document.getElementById('registerForm');
 const listingGrid = document.getElementById('listingGrid');
 const searchInput = document.querySelector('.search-bar input');
 
-// Google Sheets Public CSV URL
+// Google Sheets Public CSV URL (sellerUrl removed)
 const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRGpnhHsb907pkEZOEqXMNibGS7zqXu2ftp4PHA-Ml5hp8jDLxODuQ97cQeT7RmDiS6rBFTKOxTQjwe/pub?output=csv";
 
 // Marketplace Listings
@@ -23,13 +23,12 @@ async function fetchListings() {
 
         // CSV headers hatao (first row)
         listings = rows.slice(1).map(row => ({
-            id: row[0].trim(),
-            title: row[1].trim(),
-            gameType: row[2].trim(),
-            price: `₹${row[3].trim()}`,
-            description: row[4].trim(),
-            imageUrl: row[5].trim() || "https://via.placeholder.com/200", // Default image
-            sellerUrl: row[6].trim() || "#" // Seller URL (next page ya external link)
+            id: row[0].trim(),         // Unique Listing ID
+            title: row[1].trim(),      // Title
+            gameType: row[2].trim(),   // Game Type
+            price: `₹${row[3].trim()}`, // Price
+            description: row[4].trim(), // Description
+            imageUrl: row[5].trim() || "https://via.placeholder.com/200" // Default image
         }));
 
         renderListings();
@@ -38,17 +37,17 @@ async function fetchListings() {
     }
 }
 
-// Function to Create WhatsApp Link
-function generateWhatsAppLink(listing) {
-    const phoneNumber = "7989386499"; // Seller's WhatsApp Number
+// Function to Create WhatsApp Link for "Contact Seller"
+function generateSellerWhatsAppLink(listing) {
+    const phoneNumber = "7989386499"; // Tumhara WhatsApp Number
     const message = encodeURIComponent(`
-🔥 New Inquiry:
+🔥 Seller Inquiry:
+🆔 ID: ${listing.id}
 📌 Account: ${listing.title}
 💰 Price: ${listing.price}
-🎮 Game: ${listing.gameType}
 ℹ️ Description: ${listing.description}
 
--Gaming TradeHub;
+Mujhe iske baare me aur details chahiye. 🚀`);
 
     return `https://wa.me/${phoneNumber}?text=${message}`;
 }
@@ -68,10 +67,7 @@ function createListingCard(listing) {
                 </div>
                 <p style="color: var(--muted); margin-bottom: 1rem;">${listing.description}</p>
                 <div style="display: flex; gap: 0.5rem;">
-                    <a href="${generateWhatsAppLink(listing)}" class="btn btn-primary" style="flex: 1;" target="_blank">
-                        Contact on WhatsApp
-                    </a>
-                    <a href="${listing.sellerUrl}" class="btn btn-outline" style="flex: 1;" target="_blank">
+                    <a href="${generateSellerWhatsAppLink(listing)}" class="btn btn-primary" style="flex: 1;" target="_blank">
                         Contact Seller
                     </a>
                 </div>
