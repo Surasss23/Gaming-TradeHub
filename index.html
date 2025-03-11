@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming TradeHub</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">Gaming TradeHub</a>
+            <div class="nav-links">
+                <a href="#marketplace" class="nav-link">Marketplace</a>
+                <button id="authButton" class="btn btn-primary">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your Gaming Marketplace</h1>
+            <p>Buy and sell gaming accounts securely. Connect with verified sellers and find your next gaming adventure.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Get Started</button>
+                <button class="btn btn-outline">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Section -->
+    <section class="platforms">
+        <div class="container">
+            <section class="platforms">
+                <h1> Supported Games</h1>
+                <div class="container">
+                    <div class="platform-grid">
+                        <!-- Free Fire -->
+                        <div class="platform-card">
+                            <img src="https://i.ibb.co/nsy5VzL1/images-1-removebg-preview.png" alt="Free Fire" class="platform-image">
+                            <span>Free Fire</span>
+                        </div>
+                        <!-- BGMI -->
+                        <div class="platform-card">
+                            <img src="https://i.ibb.co/5WthY58Y/untitled-design-1-e5s2-removebg-preview.png" alt="Call of Duty" class="platform-image">
+                            <span>BGMI</span>
+                        </div>
+                        <!-- BGMI -->
+                        <div class="platform-card">
+                            <img src="https://i.ibb.co/zWH44Z8p/hd-black-white-fortnite-logo-png-701751694787049sfzwoochsh-removebg-preview.png" alt="BGMI" class="platform-image">
+                            <span>Fortnite</span>
+                        </div>
+                        <!-- Fortnite -->
+                        <div class="platform-card">
+                            <img src="https://i.ibb.co/tp6B6wxK/ba5b72d22bcb5973917ef916dd48dfb5-removebg-preview.png" alt="Fortnite" class="platform-image">
+                            <span>Call Of Duty</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section id="marketplace" class="marketplace">
+        <div class="container">
+            <div class="marketplace-header">
+                <h2>Gaming Accounts Marketplace</h2>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search by game or title...">
+                </div>
+            </div>
+            <div class="listing-grid" id="listingGrid">
+                <!-- Listings will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome to Gaming TradeHub</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+                <div class="tab-content" id="loginTab">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+                <div class="tab-content hidden" id="registerTab">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
