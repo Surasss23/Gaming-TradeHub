@@ -18,26 +18,29 @@ let listings = [];
 async function fetchListings() {
     try {
         const response = await fetch(sheetUrl);
+        if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+
         const data = await response.text();
+        console.log("Fetched CSV Data:\n", data); // Debugging
 
-        // CSV Parsing fix (lines splitting properly)
-        const rows = data.split("\n").map(row => row.split(","));
+        // CSV Parsing
+        const rows = data.split("\n").map(row => row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g));
 
-        // CSV headers hatao (first row) aur ensure karo ke sahi indexing ho
+        if (rows.length < 2) throw new Error("Invalid CSV Format!");
+
         listings = rows.slice(1).map(row => ({
-            id: row[0]?.trim() || "N/A",         // Unique Listing ID
-            title: row[1]?.trim() || "Unknown",  // Title
-            gameType: row[2]?.trim() || "N/A",   // Game Type
-            price: `₹${row[3]?.trim() || "N/A"}`, // Price
-            description: row[4]?.trim() || "No Description", // Description
-            imageUrl: row[5]?.trim() || "https://via.placeholder.com/200" // Default image
+            id: row[0]?.trim() || "N/A",
+            title: row[1]?.trim() || "Unknown",
+            gameType: row[2]?.trim() || "N/A",
+            price: `₹${row[3]?.trim() || "N/A"}`,
+            description: row[4]?.trim() || "No Description",
+            imageUrl: row[5]?.trim() || "https://via.placeholder.com/200"
         }));
 
-        console.log("Listings fetched:", listings); // Debugging ke liye
-
+        console.log("Parsed Listings:", listings);
         renderListings();
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error Fetching Data:", error);
     }
 }
 
