@@ -41,11 +41,12 @@ async function fetchListings() {
 function generateSellerWhatsAppLink(listing) {
     const phoneNumber = "7989386499"; // Tumhara WhatsApp Number
     const message = encodeURIComponent(`
-🔥 Seller Inquiry:
-🆔 ID: ${listing.id}
-📌 Account: ${listing.title}
-💰 Price: ${listing.price}
-ℹ️ Description: ${listing.description}
+🔥 *Seller Inquiry*:
+🆔 *ID:* ${listing.id}
+📌 *Account:* ${listing.title}
+🎮 *Game Type:* ${listing.gameType}
+💰 *Price:* ${listing.price}
+ℹ️ *Description:* ${listing.description}
 
 Mujhe iske baare me aur details chahiye. 🚀`);
 
